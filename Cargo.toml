@@ -36,7 +36,7 @@ tga = ["image/tga"]
 gif = ["image/gif"]
 bmp = ["image/bmp"]
 
-obj = ["obj-rs"]
+obj = ["tobj"]
 gltf = ["dep:gltf"]
 
 pcd = ["pcd-rs"]
@@ -55,7 +55,7 @@ gltf = { version = "1", optional = true, features = [
 image = { version = "0.24", optional = true, default-features = false }
 pcd-rs = { version = "0.10", optional = true, features = ["derive"] }
 data-url = { version = "0.2", optional = true }
-obj-rs = { version = "0.7.0", optional = true }
+tobj = { version = "3.2.4", optional = true }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 web-sys = { version = "0.3", features = ['Document', 'Window'] }

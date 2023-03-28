@@ -216,7 +216,7 @@ pub enum Error {
     Image(#[from] image::ImageError),
     #[cfg(feature = "obj")]
     #[error("error while parsing an .obj file")]
-    Obj(#[from] obj::ObjError),
+    Obj(#[from] tobj::LoadError),
     #[cfg(feature = "pcd")]
     #[error("error while parsing an .pcd file")]
     Pcd(#[from] pcd_rs::anyhow::Error),
