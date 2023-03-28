@@ -13,8 +13,8 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
     let mut nodes = Vec::new();
 
     for model in models.iter() {
-        let positions: Vec<Vec3> = vec![];
-        let normals: Vec<Vec3> = vec![];
+        let mut positions: Vec<Vec3> = vec![];
+        let mut normals: Vec<Vec3> = vec![];
 
         for idx in model.mesh.indices.iter() {
             let i = *idx as usize;
