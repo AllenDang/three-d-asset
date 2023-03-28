@@ -268,14 +268,14 @@ fn get_dependencies(raw_assets: &RawAssets) -> Vec<PathBuf> {
                 #[cfg(feature = "gltf")]
                 dependencies.extend(gltf::dependencies(raw_assets, path));
             }
-            "obj" => {
-                #[cfg(feature = "obj")]
-                dependencies.extend(obj::dependencies_obj(raw_assets, path));
-            }
-            "mtl" => {
-                #[cfg(feature = "obj")]
-                dependencies.extend(obj::dependencies_mtl(raw_assets, path));
-            }
+            // "obj" => {
+            //     #[cfg(feature = "obj")]
+            //     dependencies.extend(obj::dependencies_obj(raw_assets, path));
+            // }
+            // "mtl" => {
+            //     #[cfg(feature = "obj")]
+            //     dependencies.extend(obj::dependencies_mtl(raw_assets, path));
+            // }
             _ => {}
         }
     }
