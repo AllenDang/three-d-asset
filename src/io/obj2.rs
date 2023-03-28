@@ -2,7 +2,7 @@ use std::{error::Error, path::PathBuf};
 
 use obj::{load_obj, Obj};
 
-use crate::{Geometry, Indices, Node, Positions, Scene, TriMesh, Vec3};
+use crate::{Geometry, Indices, Node, Positions, Result, Scene, TriMesh, Vec3};
 
 use super::RawAssets;
 
