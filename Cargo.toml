@@ -6,8 +6,14 @@ edition = "2021"
 description = "Load/save functionality for 3d applications."
 license = "MIT"
 readme = "README.md"
-repository = "https://github.com/asny/three-d-asset"
-categories = ["parsing", "encoding", "game-development", "graphics", "rendering"]
+repository = "https://github.com/AllenDang/three-d-asset"
+categories = [
+  "parsing",
+  "encoding",
+  "game-development",
+  "graphics",
+  "rendering",
+]
 keywords = ["3d", "gamedev", "asset", "loading"]
 exclude = ["/test_data", ".gitignore"]
 
@@ -39,14 +45,17 @@ vol = []
 
 [dependencies]
 cgmath = "0.18"
-half = {version="2", features=["std", "num-traits", "zerocopy"]}
+half = { version = "2", features = ["std", "num-traits", "zerocopy"] }
 thiserror = "1"
-reqwest = {version = "0.11", optional = true }
-gltf = { version = "1", optional = true, features=["KHR_materials_ior", "KHR_materials_transmission"] }
+reqwest = { version = "0.11", optional = true }
+gltf = { version = "1", optional = true, features = [
+  "KHR_materials_ior",
+  "KHR_materials_transmission",
+] }
 wavefront_obj = { version = "10", optional = true }
-image = { version = "0.24", optional = true, default-features = false}
+image = { version = "0.24", optional = true, default-features = false }
 pcd-rs = { version = "0.10", optional = true, features = ["derive"] }
-data-url = {version = "0.2", optional = true }
+data-url = { version = "0.2", optional = true }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 web-sys = { version = "0.3", features = ['Document', 'Window'] }
