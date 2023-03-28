@@ -8,7 +8,13 @@ use crate::{
 use super::RawAssets;
 
 pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Scene> {
-    let (models, materials_data) = tobj::load_obj(path, &tobj::LoadOptions::default())?;
+    let (models, materials_data) = tobj::load_obj(
+        path,
+        &tobj::LoadOptions {
+            single_index: false,
+            ..Default::default()
+        },
+    )?;
 
     let mut nodes = Vec::new();
 
@@ -17,9 +23,6 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
         let mut normals: Vec<Vec3> = vec![];
 
         let mut indices = model.mesh.indices.clone();
-        if !model.mesh.normals.is_empty() {
-            indices.truncate(model.mesh.normals.len());
-        }
 
         for idx in indices.iter() {
             let i = *idx as usize;
