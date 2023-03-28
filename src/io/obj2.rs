@@ -6,10 +6,7 @@ use crate::{Geometry, Indices, Node, Positions, Scene, TriMesh, Vec3};
 
 use super::RawAssets;
 
-pub fn deserialize_obj(
-    raw_assets: &mut RawAssets,
-    path: &PathBuf,
-) -> Result<Scene, Box<dyn Error>> {
+pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Scene> {
     let obj_bytes = raw_assets.remove(path)?;
     let obj_data: Obj = load_obj(&obj_bytes[..])?;
 
