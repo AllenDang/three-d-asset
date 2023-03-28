@@ -23,15 +23,17 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
                 model.mesh.positions[3 * i + 1],
                 model.mesh.positions[3 * i + 2],
             ));
-            normals.push(if !model.mesh.normals.is_empty() {
-                Vec3::new(
-                    model.mesh.normals[3 * i],
-                    model.mesh.normals[3 * i + 1],
-                    model.mesh.normals[3 * i + 2],
-                )
-            } else {
-                Vec3::new(0.0, 0.0, 0.0)
-            });
+            normals.push(
+                if !model.mesh.normals.is_empty() && model.mesh.normals.len() > 3 * i {
+                    Vec3::new(
+                        model.mesh.normals[3 * i],
+                        model.mesh.normals[3 * i + 1],
+                        model.mesh.normals[3 * i + 2],
+                    )
+                } else {
+                    Vec3::new(0.0, 0.0, 0.0)
+                },
+            );
         }
 
         let uvs: Vec<Vec2> = model
