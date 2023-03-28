@@ -16,24 +16,27 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
         let mut positions: Vec<Vec3> = vec![];
         let mut normals: Vec<Vec3> = vec![];
 
-        for idx in model.mesh.indices.iter() {
+        let mut indices = model.mesh.indices.clone();
+        if !model.mesh.normals.is_empty() {
+            indices.truncate(model.mesh.normals.len());
+        }
+
+        for idx in indices.iter() {
             let i = *idx as usize;
             positions.push(Vec3::new(
                 model.mesh.positions[3 * i],
                 model.mesh.positions[3 * i + 1],
                 model.mesh.positions[3 * i + 2],
             ));
-            normals.push(
-                if !model.mesh.normals.is_empty() && model.mesh.normals.len() > 3 * i {
-                    Vec3::new(
-                        model.mesh.normals[3 * i],
-                        model.mesh.normals[3 * i + 1],
-                        model.mesh.normals[3 * i + 2],
-                    )
-                } else {
-                    Vec3::new(0.0, 0.0, 0.0)
-                },
-            );
+            normals.push(if !model.mesh.normals.is_empty() {
+                Vec3::new(
+                    model.mesh.normals[3 * i],
+                    model.mesh.normals[3 * i + 1],
+                    model.mesh.normals[3 * i + 2],
+                )
+            } else {
+                Vec3::new(0.0, 0.0, 0.0)
+            });
         }
 
         let uvs: Vec<Vec2> = model
@@ -48,7 +51,7 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
             geometry: Some(Geometry::Triangles(TriMesh {
                 positions: Positions::F32(positions),
                 normals: Some(normals),
-                indices: Indices::U32(model.mesh.indices.clone()),
+                indices: Indices::U32(indices),
                 uvs: Some(uvs),
                 ..Default::default()
             })),
