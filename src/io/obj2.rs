@@ -35,11 +35,11 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
             .collect();
 
         nodes.push(Node {
-            name: model.name,
+            name: model.name.clone(),
             geometry: Some(Geometry::Triangles(TriMesh {
                 positions: Positions::F32(positions),
                 normals: Some(normals),
-                indices: Indices::U32(model.mesh.indices),
+                indices: Indices::U32(model.mesh.indices.clone()),
                 uvs: Some(uvs),
                 ..Default::default()
             })),
@@ -48,7 +48,7 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
         });
     }
 
-    let load_tex = move |texture_path: String| -> Option<Texture2D> {
+    let mut load_tex = move |texture_path: String| -> Option<Texture2D> {
         if !texture_path.is_empty() {
             if let Ok(tex) = raw_assets.deserialize(path.parent().unwrap_or(Path::new(""))) {
                 Some(tex)
