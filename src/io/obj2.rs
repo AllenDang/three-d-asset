@@ -23,7 +23,7 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
     }
 
     nodes.push(Node {
-        name: obj_data.name.unwrap_or("default object"),
+        name: obj_data.name.unwrap_or("default object").to_string(),
         geometry: Some(Geometry::Triangles(TriMesh {
             positions: Positions::F32(positions),
             normals: Some(normals),
