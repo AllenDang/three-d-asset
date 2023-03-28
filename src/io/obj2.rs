@@ -48,7 +48,7 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
         });
     }
 
-    let load_tex = |texture_path: String| -> Option<Texture2D> {
+    let load_tex = move |texture_path: String| -> Option<Texture2D> {
         if !texture_path.is_empty() {
             if let Ok(tex) = raw_assets.deserialize(path.parent().unwrap_or(Path::new(""))) {
                 Some(tex)
@@ -64,12 +64,12 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
     if let Ok(mats) = materials_data {
         for m in mats.iter() {
             materials.push(PbrMaterial {
-                name: m.name,
+                name: m.name.clone(),
                 albedo: Color::from_rgb_slice(&m.diffuse),
-                albedo_texture: load_tex(m.diffuse_texture),
+                albedo_texture: load_tex(m.diffuse_texture.clone()),
                 metallic: (m.specular[0] + m.specular[1] + m.specular[2]) / 3.0,
                 roughness: m.shininess,
-                normal_texture: load_tex(m.normal_texture),
+                normal_texture: load_tex(m.normal_texture.clone()),
                 lighting_model: LightingModel::Blinn,
                 ..Default::default()
             });
