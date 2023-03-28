@@ -46,7 +46,7 @@ mod saver;
 pub use saver::*;
 
 #[cfg(feature = "obj")]
-mod obj;
+mod obj2;
 
 #[cfg(feature = "gltf")]
 mod gltf;
@@ -168,7 +168,7 @@ impl Deserialize for crate::Scene {
                 return Err(Error::FeatureMissing("obj".to_string()));
 
                 #[cfg(feature = "obj")]
-                obj::deserialize_obj(raw_assets, &path)
+                obj2::deserialize_obj(raw_assets, &path)
             }
             "pcd" => {
                 #[cfg(not(feature = "pcd"))]
