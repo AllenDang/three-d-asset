@@ -13,19 +13,26 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
     let mut nodes = Vec::new();
 
     for model in models.iter() {
-        let positions: Vec<Vec3> = model
-            .mesh
-            .positions
-            .chunks_exact(3)
-            .map(|chunk| Vec3::new(chunk[0], chunk[1], chunk[2]))
-            .collect();
+        let positions: Vec<Vec3> = vec![];
+        let normals: Vec<Vec3> = vec![];
 
-        let normals: Vec<Vec3> = model
-            .mesh
-            .normals
-            .chunks_exact(3)
-            .map(|chunk| Vec3::new(chunk[0], chunk[1], chunk[2]))
-            .collect();
+        for idx in model.mesh.indices.iter() {
+            let i = *idx as usize;
+            positions.push(Vec3::new(
+                model.mesh.positions[3 * i],
+                model.mesh.positions[3 * i + 1],
+                model.mesh.positions[3 * i + 2],
+            ));
+            normals.push(if !model.mesh.normals.is_empty() {
+                Vec3::new(
+                    model.mesh.normals[3 * i],
+                    model.mesh.normals[3 * i + 1],
+                    model.mesh.normals[3 * i + 2],
+                )
+            } else {
+                Vec3::new(0.0, 0.0, 0.0)
+            });
+        }
 
         let uvs: Vec<Vec2> = model
             .mesh
