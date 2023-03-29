@@ -73,10 +73,16 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
         for m in mats.iter() {
             materials.push(PbrMaterial {
                 name: m.name.clone(),
-                albedo: Color::from_rgb_slice(&m.diffuse),
+                albedo: Color::from_rgba_slice(&[
+                    m.diffuse[0],
+                    m.diffuse[1],
+                    m.diffuse[2],
+                    m.dissolve,
+                ]),
                 albedo_texture: load_tex(m.diffuse_texture.clone()),
                 metallic: (m.specular[0] + m.specular[1] + m.specular[2]) / 3.0,
                 roughness: m.shininess,
+                metallic_roughness_texture: load_tex(m.specular_texture),
                 normal_texture: load_tex(m.normal_texture.clone()),
                 lighting_model: LightingModel::Blinn,
                 ..Default::default()
