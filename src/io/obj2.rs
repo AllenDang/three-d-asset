@@ -82,7 +82,7 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
                 albedo_texture: load_tex(m.diffuse_texture.clone()),
                 metallic: (m.specular[0] + m.specular[1] + m.specular[2]) / 3.0,
                 roughness: m.shininess,
-                metallic_roughness_texture: load_tex(m.specular_texture),
+                metallic_roughness_texture: load_tex(m.specular_texture.clone()),
                 normal_texture: load_tex(m.normal_texture.clone()),
                 lighting_model: LightingModel::Blinn,
                 ..Default::default()
