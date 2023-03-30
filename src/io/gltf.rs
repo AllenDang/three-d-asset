@@ -188,7 +188,7 @@ pub fn deserialize_gltf(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sc
         children: Vec::new(),
     };
 
-    for s in document.scenes().iter() {
+    for s in document.scenes() {
         for c in s.nodes() {
             if let Some(mut node) = nodes[c.index()].take() {
                 visit(c, &mut nodes, &mut node.children);
