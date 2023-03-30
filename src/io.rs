@@ -49,7 +49,7 @@ pub use saver::*;
 mod obj2;
 
 #[cfg(feature = "gltf")]
-mod gltf;
+mod gltf_loader;
 
 #[cfg(feature = "image")]
 mod img;
@@ -161,7 +161,7 @@ impl Deserialize for crate::Scene {
                 return Err(Error::FeatureMissing("gltf".to_string()));
 
                 #[cfg(feature = "gltf")]
-                gltf::deserialize_gltf(raw_assets, &path)
+                gltf_loader::deserialize_gltf(raw_assets, &path)
             }
             "obj" => {
                 #[cfg(not(feature = "obj"))]
@@ -266,7 +266,7 @@ fn get_dependencies(raw_assets: &RawAssets) -> Vec<PathBuf> {
         match path.extension().map(|e| e.to_str().unwrap()).unwrap_or("") {
             "gltf" | "glb" => {
                 #[cfg(feature = "gltf")]
-                dependencies.extend(gltf::dependencies(raw_assets, path));
+                dependencies.extend(gltf_loader::dependencies(raw_assets, path));
             }
             // "obj" => {
             //     #[cfg(feature = "obj")]
