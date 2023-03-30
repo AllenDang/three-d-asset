@@ -1,5 +1,5 @@
 use crate::{animation::*, geometry::*, io::*, material::*, Error, Node, Result, Scene};
-use ::gltf::Gltf;
+use gltf::Gltf;
 use std::collections::HashSet;
 use std::path::{Path, PathBuf};
 
@@ -244,18 +244,20 @@ fn parse_model(mesh: &::gltf::mesh::Mesh, buffers: &[::gltf::buffer::Data]) -> R
                 .read_tex_coords(0)
                 .map(|values| values.into_f32().map(|uv| uv.into()).collect());
 
-            children.push(Node {
-                geometry: Some(Geometry::Triangles(TriMesh {
-                    positions: Positions::F32(positions),
-                    normals,
-                    tangents,
-                    indices,
-                    colors,
-                    uvs,
-                })),
-                material_index: primitive.material().index(),
-                ..Default::default()
-            });
+            if normals != None && uvs != None {
+                children.push(Node {
+                    geometry: Some(Geometry::Triangles(TriMesh {
+                        positions: Positions::F32(positions),
+                        normals,
+                        tangents,
+                        indices,
+                        colors,
+                        uvs,
+                    })),
+                    material_index: primitive.material().index(),
+                    ..Default::default()
+                });
+            }
         }
     }
     Ok(children)
