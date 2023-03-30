@@ -1,5 +1,5 @@
 use crate::{animation::*, geometry::*, io::*, material::*, Error, Node, Result, Scene};
-use ::gltf::Gltf;
+use gltf::Gltf;
 use std::collections::HashSet;
 use std::path::{Path, PathBuf};
 
@@ -187,12 +187,16 @@ pub fn deserialize_gltf(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sc
         materials,
         children: Vec::new(),
     };
-    for c in gltf_scene.nodes() {
-        if let Some(mut node) = nodes[c.index()].take() {
-            visit(c, &mut nodes, &mut node.children);
-            scene.children.push(node);
+
+    for s in document.scenes().iter() {
+        for c in s.nodes() {
+            if let Some(mut node) = nodes[c.index()].take() {
+                visit(c, &mut nodes, &mut node.children);
+                scene.children.push(node);
+            }
         }
     }
+
     Ok(scene)
 }
 
