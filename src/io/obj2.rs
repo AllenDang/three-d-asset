@@ -1,4 +1,7 @@
-use std::path::{Path, PathBuf};
+use std::{
+    os::raw,
+    path::{Path, PathBuf},
+};
 
 use crate::{
     Color, Geometry, Indices, LightingModel, Node, PbrMaterial, Positions, Result, Scene,
@@ -8,6 +11,7 @@ use crate::{
 use super::RawAssets;
 
 pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Scene> {
+    raw_assets.remove(path)?;
     let (models, materials_data) = tobj::load_obj(
         path,
         &tobj::LoadOptions {
@@ -15,6 +19,8 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
             ..Default::default()
         },
     )?;
+
+    let p = path.parent().unwrap_or(Path::new(""));
 
     let mut nodes = Vec::new();
 
@@ -63,16 +69,13 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
                 .filter(|p| !p.is_empty())
                 .collect();
 
-            let tex_path = path
-                .parent()
-                .unwrap()
-                .join(&PathBuf::from_iter(tex_path_part.iter()));
+            let tex_path = p.join(&PathBuf::from_iter(tex_path_part.iter()));
 
-            println!("{:?}", tex_path.clone());
-            if let Ok(tex) = raw_assets.deserialize(tex_path) {
-                println!("done");
+            let tex_de = raw_assets.deserialize(tex_path);
+            if let Ok(tex) = tex_de {
                 Some(tex)
             } else {
+                println!("{:?}", tex_path);
                 None
             }
         } else {
