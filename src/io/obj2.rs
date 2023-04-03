@@ -54,7 +54,7 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
             }
 
             if pbr_mat.metallic_roughness_texture.is_none() {
-                pbr_mat.metallic = m.specular.iter().sum() / 3.0;
+                pbr_mat.metallic = m.specular.iter().sum::<f32>() / 3.0;
                 pbr_mat.roughness = m.shininess;
             }
 
