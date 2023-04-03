@@ -71,14 +71,19 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
     let mut materials = Vec::new();
     if let Ok(mats) = materials_data {
         for m in mats.iter() {
+            let color = if m.diffuse[0] != m.diffuse[1] || m.diffuse[1] != m.diffuse[2] {
+                m.diffuse
+            } else if m.specular[0] != m.specular[1] || m.specular[1] != m.specular[2] {
+                m.specular
+            } else if m.ambient[0] != m.ambient[1] || m.ambient[1] != m.ambient[2] {
+                m.ambient
+            } else {
+                m.diffuse
+            };
+
             materials.push(PbrMaterial {
                 name: m.name.clone(),
-                albedo: Color::from_rgba_slice(&[
-                    m.diffuse[0],
-                    m.diffuse[1],
-                    m.diffuse[2],
-                    m.dissolve,
-                ]),
+                albedo: Color::from_rgba_slice(&[color[0], color[1], color[2], m.dissolve]),
                 albedo_texture: load_tex(m.diffuse_texture.clone()),
                 // metallic: (m.specular[0] + m.specular[1] + m.specular[2]) / 3.0,
                 // roughness: m.shininess,
