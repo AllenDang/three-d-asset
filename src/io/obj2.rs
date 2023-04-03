@@ -25,9 +25,9 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
 
     let p = path.parent().unwrap_or(Path::new(""));
 
-    let mut insert_tex = move |texture_path: String| {
+    let mut load_tex = move |texture_path: String| -> Option<Texture2D> {
         if texture_path.is_empty() {
-            return;
+            return None;
         }
 
         let tex_path_part: Vec<&str> = texture_path
@@ -39,10 +39,6 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
 
         let tex_bytes = std::fs::read(tex_path).unwrap();
         raw_assets.insert(texture_path.clone(), tex_bytes);
-    };
-
-    let mut load_tex = move |texture_path: String| -> Option<Texture2D> {
-        insert_tex(texture_path.clone());
 
         let tex_de = raw_assets.deserialize(texture_path);
         if let Ok(tex) = tex_de {
