@@ -60,10 +60,10 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
         if !texture_path.is_empty() {
             let mut tex_path = path.parent().unwrap();
 
-            let tex_path_part: Vec<&str> = texture_path.split(&['/', '\\']).collect();
+            let tex_path_part: Vec<&str> = texture_path.split(['/', '\\']).collect();
             for tp in tex_path_part.iter() {
                 if !tp.is_empty() {
-                    tex_path.join(tp);
+                    tex_path = &tex_path.join(tp);
                 }
             }
 
