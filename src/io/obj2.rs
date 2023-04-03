@@ -39,7 +39,7 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
     let mut materials = Vec::new();
     if let Ok(mats) = materials_data {
         for m in mats.iter() {
-            materials.push(PbrMaterial {
+            let pbr_mat = PbrMaterial {
                 name: m.name.clone(),
                 albedo: Color::from_rgba_slice(&[
                     m.diffuse[0],
@@ -54,7 +54,9 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
                 normal_texture: load_tex(m.normal_texture.clone()),
                 lighting_model: LightingModel::Blinn,
                 ..Default::default()
-            });
+            };
+            println!("{:?}", pbr_mat);
+            materials.push(pbr_mat);
         }
     }
 
