@@ -75,7 +75,7 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
             let tex_path = p.join(&PathBuf::from_iter(tex_path_part.iter()));
 
             let tex_bytes = std::fs::read(tex_path).unwrap();
-            raw_assets.insert(texture_path, tex_bytes);
+            raw_assets.insert(texture_path.clone(), tex_bytes);
 
             let tex_de = raw_assets.deserialize(texture_path);
             if let Ok(tex) = tex_de {
