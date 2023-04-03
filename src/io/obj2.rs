@@ -111,7 +111,7 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
         });
 
         println!(
-            "mat index {}",
+            "mat index {:?}",
             materials.iter().position(|m| m.name == model.name.clone())
         )
     }
