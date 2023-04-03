@@ -42,6 +42,8 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
     };
 
     let mut load_tex = move |texture_path: String| -> Option<Texture2D> {
+        insert_tex(texture_path.clone);
+
         let tex_de = raw_assets.deserialize(texture_path);
         if let Ok(tex) = tex_de {
             Some(tex)
@@ -53,30 +55,6 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
     let mut materials = Vec::new();
     if let Ok(mats) = materials_data {
         for m in mats.iter() {
-            if !m.diffuse_texture.is_empty() {
-                insert_tex(m.diffuse_texture);
-            }
-
-            if !m.ambient_texture.is_empty() {
-                insert_tex(m.ambient_texture);
-            }
-
-            if !m.normal_texture.is_empty() {
-                insert_tex(m.normal_texture);
-            }
-
-            if !m.specular_texture.is_empty() {
-                insert_tex(m.specular_texture);
-            }
-
-            if !m.dissolve_texture.is_empty() {
-                insert_tex(m.dissolve_texture);
-            }
-
-            if !m.shininess_texture.is_empty() {
-                insert_tex(m.shininess_texture);
-            }
-
             materials.push(PbrMaterial {
                 name: m.name.clone(),
                 albedo: Color::from_rgba_slice(&[
