@@ -75,7 +75,7 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
             if let Ok(tex) = tex_de {
                 Some(tex)
             } else {
-                println!("{:?}", tex_path);
+                println!("{:?}", tex_de);
                 None
             }
         } else {
