@@ -1,11 +1,11 @@
 use std::path::{Path, PathBuf};
 
 use crate::{
-    Color, Geometry, Indices, LightingModel, Node, PbrMaterial, Positions, Result, Scene,
-    Texture2D, TriMesh, Vec2, Vec3,
+    Color, Geometry, GeometryFunction, Indices, LightingModel, Node, NormalDistributionFunction,
+    PbrMaterial, Positions, Result, Scene, Texture2D, TriMesh, Vec2, Vec3,
 };
 
-use super::RawAssets;
+use super::{load, RawAssets};
 
 pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Scene> {
     raw_assets.remove(path)?;
@@ -44,7 +44,11 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
                 albedo_texture: load_tex(m.diffuse_texture.clone()),
                 metallic_roughness_texture: load_tex(m.specular_texture.clone()),
                 normal_texture: load_tex(m.normal_texture.clone()),
-                lighting_model: LightingModel::Blinn,
+                occlusion_texture: load_tex(m.specular_texture.clone()),
+                lighting_model: LightingModel::Cook(
+                    NormalDistributionFunction::TrowbridgeReitzGGX,
+                    GeometryFunction::SmithSchlickGGX,
+                ),
                 ..Default::default()
             };
 
