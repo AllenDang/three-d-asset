@@ -58,7 +58,7 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
 
     let mut load_tex = move |texture_path: String| -> Option<Texture2D> {
         if !texture_path.is_empty() {
-            println!("{:?}", path.join(texture_path));
+            println!("{:?}", path.join(texture_path.clone()));
             if let Ok(tex) = raw_assets.deserialize(path.join(texture_path)) {
                 println!("done");
                 Some(tex)
