@@ -1,8 +1,8 @@
 use std::path::{Path, PathBuf};
 
 use crate::{
-    Color, Geometry, GeometryFunction, Indices, LightingModel, Node, NormalDistributionFunction,
-    PbrMaterial, Positions, Result, Scene, Texture2D, TriMesh, Vec2, Vec3,
+    Color, Geometry, Indices, LightingModel, Node, PbrMaterial, Positions, Result, Scene,
+    Texture2D, TriMesh, Vec2, Vec3,
 };
 
 use super::RawAssets;
@@ -39,22 +39,25 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
     let mut materials = Vec::new();
     if let Ok(mats) = materials_data {
         for m in mats.iter() {
-            let pbr_mat = PbrMaterial {
+            let mut pbr_mat = PbrMaterial {
                 name: m.name.clone(),
-                // albedo: Color::from_rgba_slice(&[
-                //     m.diffuse[0],
-                //     m.diffuse[1],
-                //     m.diffuse[2],
-                //     m.dissolve,
-                // ]),
                 albedo_texture: load_tex(m.diffuse_texture.clone()),
-                metallic: (m.specular[0] + m.specular[1] + m.specular[2]) / 3.0,
-                roughness: m.shininess,
                 metallic_roughness_texture: load_tex(m.specular_texture.clone()),
                 normal_texture: load_tex(m.normal_texture.clone()),
                 lighting_model: LightingModel::Blinn,
                 ..Default::default()
             };
+
+            if pbr_mat.albedo_texture.is_none() {
+                pbr_mat.albedo =
+                    Color::from_rgba_slice(&[m.diffuse[0], m.diffuse[1], m.diffuse[2], m.dissolve]);
+            }
+
+            if pbr_mat.metallic_roughness_texture.is_none() {
+                pbr_mat.metallic = m.specular.iter().sum() / 3.0;
+                pbr_mat.roughness = m.shininess;
+            }
+
             materials.push(pbr_mat);
         }
     }
