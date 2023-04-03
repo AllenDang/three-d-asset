@@ -78,6 +78,7 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
             raw_assets.insert(texture_path.clone(), tex_bytes);
 
             let tex_de = raw_assets.deserialize(texture_path);
+            println!("{:?}", tex_de);
             if let Ok(tex) = tex_de {
                 Some(tex)
             } else {
