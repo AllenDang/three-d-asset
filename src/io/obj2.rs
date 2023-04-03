@@ -7,8 +7,8 @@ use std::{
 use tobj::LoadOptions;
 
 use crate::{
-    Color, Geometry, Indices, LightingModel, Node, PbrMaterial, Positions, Result, Scene,
-    Texture2D, TriMesh, Vec2, Vec3,
+    Color, Geometry, GeometryFunction, Indices, LightingModel, Node, NormalDistributionFunction,
+    PbrMaterial, Positions, Result, Scene, Texture2D, TriMesh, Vec2, Vec3,
 };
 
 use super::RawAssets;
