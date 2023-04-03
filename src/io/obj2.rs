@@ -131,10 +131,7 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
                 uvs: Some(uvs),
                 ..Default::default()
             })),
-            material_index: materials
-                .iter()
-                .position(|m| &m.name == model.name.clone())
-                .unwrap(),
+            material_index: materials.iter().position(|m| m.name == model.name.clone()),
             ..Default::default()
         });
     }
