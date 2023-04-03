@@ -42,7 +42,7 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
     };
 
     let mut load_tex = move |texture_path: String| -> Option<Texture2D> {
-        insert_tex(texture_path.clone);
+        insert_tex(texture_path.clone());
 
         let tex_de = raw_assets.deserialize(texture_path);
         if let Ok(tex) = tex_de {
