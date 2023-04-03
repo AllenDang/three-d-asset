@@ -9,7 +9,7 @@ use super::RawAssets;
 
 pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Scene> {
     raw_assets.remove(path)?;
-    let (models, materials_data) = tobj::load_obj(path, &tobj::GPU_LOAD_OPTIONS)?;
+    let (models, materials_data) = tobj::load_obj(path, &tobj::LoadOptions::default())?;
 
     let p = path.parent().unwrap_or(Path::new(""));
 
