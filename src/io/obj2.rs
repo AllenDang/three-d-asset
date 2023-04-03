@@ -1,10 +1,4 @@
-use std::{
-    collections::HashSet,
-    os::raw,
-    path::{Path, PathBuf},
-};
-
-use tobj::LoadOptions;
+use std::path::{Path, PathBuf};
 
 use crate::{
     Color, Geometry, GeometryFunction, Indices, LightingModel, Node, NormalDistributionFunction,
@@ -15,13 +9,7 @@ use super::RawAssets;
 
 pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Scene> {
     raw_assets.remove(path)?;
-    let (models, materials_data) = tobj::load_obj(
-        path,
-        &tobj::LoadOptions {
-            single_index: true,
-            ..Default::default()
-        },
-    )?;
+    let (models, materials_data) = tobj::load_obj(path, &tobj::GPU_LOAD_OPTIONS)?;
 
     let p = path.parent().unwrap_or(Path::new(""));
 
@@ -64,11 +52,7 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
                 roughness: m.shininess,
                 metallic_roughness_texture: load_tex(m.specular_texture.clone()),
                 normal_texture: load_tex(m.normal_texture.clone()),
-                lighting_model: LightingModel::Cook(
-                    NormalDistributionFunction::TrowbridgeReitzGGX,
-                    GeometryFunction::SmithSchlickGGX,
-                ),
-
+                lighting_model: LightingModel::Blinn,
                 ..Default::default()
             });
         }
@@ -109,7 +93,7 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
                 uvs: Some(uvs),
                 ..Default::default()
             })),
-            material_index: materials.iter().position(|m| m.name == model.name.clone()),
+            material_index: model.mesh.material_id,
             ..Default::default()
         });
     }
