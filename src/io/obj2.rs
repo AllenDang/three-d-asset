@@ -1,7 +1,10 @@
 use std::{
+    collections::HashSet,
     os::raw,
     path::{Path, PathBuf},
 };
+
+use tobj::LoadOptions;
 
 use crate::{
     Color, Geometry, Indices, LightingModel, Node, PbrMaterial, Positions, Result, Scene,
@@ -71,11 +74,13 @@ pub fn deserialize_obj(raw_assets: &mut RawAssets, path: &PathBuf) -> Result<Sce
 
             let tex_path = p.join(&PathBuf::from_iter(tex_path_part.iter()));
 
-            let tex_de = raw_assets.deserialize(tex_path);
+            let tex_bytes = std::fs::read(tex_path).unwrap();
+            raw_assets.insert(texture_path, tex_bytes);
+
+            let tex_de = raw_assets.deserialize(texture_path);
             if let Ok(tex) = tex_de {
                 Some(tex)
             } else {
-                println!("{:?}", tex_de);
                 None
             }
         } else {
